@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Página Principal - Mister K{% endblock %}
+
+{% block header_title %}Bienvenido a Mister K{% endblock %}
+
+{% block content %}
+
+{% load static %}
+  
+    <!-- Formulario de login -->
+    <form method="POST" action="{% url 'login' %}">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label for="username" class="block text-sm font-semibold">Usuario</label>
+        <input type="text" name="username" id="username" class="w-full p-2 border rounded" required>
+      </div>
+      <div class="mb-4">
+        <label for="password" class="block text-sm font-semibold">Contraseña</label>
+        <input type="password" name="password" id="password" class="w-full p-2 border rounded" required>
+      </div>
+      <button type="submit" class="w-full bg-amber-400 hover:bg-amber-500 text-white p-2 rounded">Iniciar sesión</button>
+    </form>
+    
+    {% if messages %}
+      {% for message in messages %}
+          <p class="text-red-500 text-xs mt-2">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+    
+{% endblock %}
+
+{% block footer %}
+  &copy; 2024 Mister K. Todos los derechos reservados.
+{% endblock %}

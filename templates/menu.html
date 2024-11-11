@@ -1,0 +1,93 @@
+
+{% extends "base.html" %}
+
+{% block title %}Página Principal - Mister K{% endblock %}
+
+{% block header_title %}Bienvenido a Mister K{% endblock %}
+
+{% block content %}
+
+{% load static %}
+  
+    
+
+
+  <!-- Categorias -->
+   <div>
+    {% for c in categorias %}
+        <a href="/categoria/{{ c.id }}/" class="uppercase font-bold hover:text-amber-600 px-1">
+          {{c.nombre_categoria}}
+        </a>
+    {% endfor %}
+   </div>
+
+  <!-- Comidas -->
+  <div class="flex my-6 gap-3 flex-wrap w-auto justify-center">
+    {% for p in productos %}
+
+    <!-- Carta de las comida -->
+    <div class="p-4 border border-amber-400 rounded hover:border-2 w-60 flex flex-col items-stretch justify-between"
+    onClick="window.location.href='/producto/{{ p.id }}/'"
+    >
+      <div>
+
+        {% if p.imagen %}
+              <img class="object-contain h-64 w-full" src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+        {% else %}
+              <img class="object-contain h-64 w-full" src="{% static 'images/default_image.png' %}">
+        {% endif %}
+
+        <h4 class="font-bold">{{p.nombre}}
+          {% if p.oferta == 1 %}
+
+            <span class="bg-amber-400 px-2 rounded font-bold">
+              {{p.porcentajeOferta}}%
+            </span>
+            
+          {% endif %}
+
+
+        </h4>
+        <p>{{p.descripcion}}</p>
+      </div>
+
+      {% if p.oferta == 1 %}
+
+        <div class="mt-2">
+
+          <button class="font-bold  py-1 rounded">
+            <span class="text-gray-500 line-through">
+              ${{p.precio}} 
+            </span>
+      
+            <span class="text-amber-500">
+              ${{p.precio_con_descuento}}
+            </span>
+          </button>
+        </div>
+
+      {% elif p.oferta == 0 %} 
+
+        <div class="mt-2">
+        <button class="text-amber-500 font-bold  py-1 rounded">
+          ${{p.precio}}
+        </button>
+      </div>
+        
+      {% endif %}
+
+     
+      
+
+    </div>
+
+    {% endfor %}
+  </div>
+
+    
+    
+{% endblock %}
+
+{% block footer %}
+  &copy; 2024 Mister K. Todos los derechos reservados.
+{% endblock %}

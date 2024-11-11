@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Página Principal - Mister K{% endblock %}
+
+{% block header_title %}Bienvenido a Mister K{% endblock %}
+
+{% block content %}
+
+{% load static %}
+  
+    <img class="w-full h-auto" src="{% static 'images/misterk.png' %}">
+
+    <div class="productos-en-oferta mt-4">
+      <h2 class="text-xl font-bold mb-4">Productos en Oferta</h2>
+      <div class="flex gap-4">
+          {% for p in productos_en_oferta %}
+              <div class="p-4 border border-amber-400 rounded hover:bg-white w-60 flex flex-col items-stretch hover:border-2"
+              onClick="window.location.href='/producto/{{ p.id }}/'">
+                {% if p.imagen %}
+                      <img class="object-contain h-64 w-full" src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+                {% else %}
+                      <img class="object-contain h-64 w-full" src="{% static 'images/default_image.png' %}">
+                {% endif %}
+
+                  <h4 class="font-bold">{{ p.nombre }}
+                    {% if p.oferta == 1 %}
+                    <span class="bg-amber-400 px-2 rounded font-bold">
+                      {{p.porcentajeOferta}}%
+                    </span>
+  
+                  {% endif %}
+
+                  </h4>
+
+                  <p>{{ p.descripcion }}</p>
+  
+                  <div class="mt-2">
+                      <button class="font-bold py-1 rounded">
+                          <span class="text-gray-500 line-through">
+                              ${{ p.precio }}
+                          </span>
+                          <span class="text-amber-500">
+                              ${{ p.precio_con_descuento }}
+                          </span>
+                      </button>
+                  </div>
+              </div>
+          {% endfor %}
+      </div>
+  </div>
+
+    
+    
+{% endblock %}
+
+{% block footer %}
+  &copy; 2024 Mister K. Todos los derechos reservados.
+{% endblock %}

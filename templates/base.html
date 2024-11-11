@@ -1,0 +1,72 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>{% block title %}Mister K{% endblock %}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const toast = document.querySelector('.toast');
+      if (toast) {
+        setTimeout(() => {
+          toast.classList.add('opacity-0');
+          setTimeout(() => toast.remove(), 500); // Elimina el mensaje después de que se desvanezca
+        }, 3000); // El mensaje desaparecerá después de 3 segundos
+      }
+    });
+  </script>
+
+  <div class="grid min-h-screen grid-rows-[auto_1fr_auto]">
+    <header class="bg-amber-400 p-5">
+      <div class="flex items-center flex-col">
+        <h1 class="text-3xl font-bold mb-3">
+          {% block header_title %}MISTER - K - INDEX{% endblock %}
+        </h1>
+        <ul class="flex gap-2 uppercase font-bold text-sm items-center">
+          <li class="hover:underline">
+            <a href="{% url 'index' %}">Index</a>
+          </li>
+          <li class="hover:underline">
+            <a href="{% url 'menu' %}">Menu</a>
+          </li>
+          <li class="hover:underline">
+            <a href="{% url 'agregados' %}">Agregados</a>
+          </li>
+          <li class="hover:underline">
+            <a href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="hover:underline">
+            <a href="{% url 'ubicacion' %}">Ubicación</a>
+          </li>
+          <li class="hover:underline">
+            <a href="{% url 'carrito' %}" class="flex items-center">
+                Carrito
+            </a>
+        </li>
+        </ul>
+      </div>
+    </header>
+
+    <main class="bg-white p-5 flex items-center flex-col ">
+      {% block content %}
+      <!-- Contenido principal de cada página -->
+      {% endblock %}
+    </main>
+
+    <footer class="bg-amber-400 p-5">
+      {% block footer %}FOOTER{% endblock %}
+    </footer>
+  </div>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,143 @@
+
+{% extends "base.html" %}
+
+{% block title %}Página Principal - Mister K{% endblock %}
+
+{% block header_title %}Bienvenido a Mister K{% endblock %}
+
+{% block content %}
+
+{% load static %}
+  
+<div class="p-10">
+  <div class="containerProductos p-4">
+    <div
+      class="max-w-2xl rounded-lg overflow-hidden shadow-2xl bg-white mx-auto"
+    >
+      
+      <div class="px-10 py-5">
+        
+        {% if producto.oferta == 1 %}
+          <div class="flex py-3">
+            <p class="bg-amber-500 rounded px-2 w-50 text-white font-bold">OFERTA {{producto.porcentajeOferta}}%</p>
+          </div>
+        {% endif %}
+
+        <div class="">
+          <h4 class="font-bold text-3xl mb-4 text-gray-900">
+            {{ producto.nombre }}
+          </h4>
+
+          <div class="p-4">
+            {% if producto.imagen %}
+              <img class="object-contain h-64 w-full" src="{{ producto.imagen.url }}" alt="{{ p.nombre }}">
+            {% else %}
+                <p>No hay imagen disponible</p>
+            {% endif %}
+          </div>
+         
+        </div>
+        <p class="text-gray-700 text-lg mb-6">{{ producto.descripcion }}</p>
+
+
+    
+        
+        <div class="flex items-center justify-between">
+          <div>
+            {% if producto.oferta == 1 %}
+              <h5 class="text-amber-500 font-bold text-xl"> 
+                  <span class="line-through text-gray-500">${{producto.precio}}</span> ${{producto.precio_con_descuento}} 
+              </h5> 
+            {% else %} 
+              <h5 class="text-amber-500 font-bold text-xl">${{producto.precio}}</h5>
+            {% endif %} 
+          </div>
+
+          <button
+              class="bg-amber-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-amber-700"
+              onclick="agregarAlCarrito({{ producto.id }})">
+              <i class="fa-solid fa-cart-plus text-xl"></i>
+          </button>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-4">
+    <h3 class="text-2xl uppercase font-bold text-center mb-3">
+      Relacionados
+    </h3>
+    <div>
+      <h3 class="text-2xl uppercase font-bold text-center mb-3">
+        {{categoria.nombre_categoria}}
+      </h3>
+    
+      <div class="w-auto p-5 flex flex-wrap gap-4 place-content-center">
+        {% for p in productos_relacionados %}
+            <div
+             class="p-4 border border-amber-400 rounded hover:bg-white w-60 flex flex-col items-stretch hover:border-2"
+              onClick="window.location.href='/producto/{{ p.id }}/'"
+            >
+  
+            <div class="p-4">
+              {% if p.imagen %}
+                    <img class="object-contain h-64 w-full" src="{{ p.imagen.url }}" alt="{{ p.nombre }}">
+              {% else %}
+                    <img class="object-contain h-64 w-full" src="{% static 'images/default_image.png' %}">
+              {% endif %}
+            </div>
+                <div class="p-4 flex flex-col justify-between">
+                  <div>
+                    <h4 class="font-bold">{{p.nombre}}
+                      {% if p.oferta == 1 %}
+            
+                        <span class="bg-amber-400 px-2 rounded font-bold">
+                          {{p.porcentajeOferta}}%
+                        </span>
+                        
+                      {% endif %}
+            
+            
+                    </h4>
+                    <p>{{p.descripcion}}</p> 
+                  </div>
+                
+                  {% if p.oferta == 1 %}
+                  <h5 class="text-amber-500 font-bold text-xl"> 
+                      <span class="line-through text-gray-500">${{p.precio}}</span> {{p.precio_con_descuento}} 
+                  </h5> 
+                  {% else %} 
+                  <h5 class="text-amber-500 font-bold text-xl">${{p.precio}}</h5>
+                {% endif %} 
+              </div>
+            </div>
+
+        {% endfor %}
+      </div>
+      
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+  function agregarAlCarrito(productoId) {
+      fetch(`/agregar_carrito/${productoId}/`)
+          .then(response => response.json())
+          .then(data => {
+              alert(data.mensaje); // Alerta al agregar producto
+              // Actualizar el contador en el carrito
+              document.getElementById('contador-carrito').textContent = data.carrito_total;
+          });
+  }
+</script>
+    
+    
+{% endblock %}
+
+{% block footer %}
+  &copy; 2024 Mister K. Todos los derechos reservados.
+{% endblock %}
